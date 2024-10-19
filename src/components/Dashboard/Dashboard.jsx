@@ -1,21 +1,9 @@
 import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
-
 import { useState, useEffect } from "react";
 import { ethers } from "../../../ethers-5.6.esm.min.js";
 import "./Dashboard.css";
-
-const chainConfig = {
-  chainId: "0xaa36a7",
-  rpcTarget:
-    "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorer: "https://sepolia.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Sepolia Ether",
-};
-
-let provider;
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 const Dashboard = () => {
   const { logout } = useAuth();
@@ -59,19 +47,24 @@ const Dashboard = () => {
   // Fetch wallet information and initialize provider
   useEffect(() => {
     const fetchWalletInfo = async () => {
-      let address = localStorage.getItem("walletAddress");
-      if (address) {
-        provider = new ethers.providers.JsonRpcProvider(chainConfig.rpcTarget);
-      } else {
-        if (window.ethereum) {
-          provider = new ethers.providers.Web3Provider(window.ethereum);
-          await window.ethereum.request({ method: "eth_requestAccounts" });
-        }
-        const signer = provider.getSigner();
-        address = await signer.getAddress();
-      }
+      const provider = await EthereumProvider.init({
+        projectId: "aecf1ee81036bd3fe28c914b0465a30f",
+        metadata: {
+          name: "AppKit",
+          description: "AppKit Example",
+          url: "https://example.com",
+          icons: ["https://avatars.githubusercontent.com/u/179229932"],
+        },
+        showQrModal: true,
+        optionalChains: [1, 137, 2020, 11155111],
 
-      // Fetch and set wallet balance and network info
+        rpcMap: {
+          1155111:
+            "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
+        },
+      });
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
       const balance = await provider.getBalance(address);
       const networkInfo = await provider.getNetwork();
       setWalletAddress(address);
