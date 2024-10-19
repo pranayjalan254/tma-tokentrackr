@@ -2,19 +2,9 @@ import { useState, useEffect } from "react";
 import { ethers } from "../../../ethers-5.6.esm.min.js";
 import Modal from "react-modal";
 import "./TokenTransfer.css";
-
 import { ERC20_ABI } from "../../../ERC20_ABI.js";
 import { popularTokens } from "../../PopularTokens.js";
-
-const chainConfig = {
-  chainId: "0xaa36a7",
-  rpcTarget:
-    "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorer: "https://sepolia.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Sepolia Ether",
-};
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 const TokenTransfer = () => {
   // State variables for managing form input, loading state, transaction details, etc.
@@ -40,26 +30,24 @@ const TokenTransfer = () => {
   // Effect to set up the provider when the component mounts
   useEffect(() => {
     const setupProvider = async () => {
-      try {
-        let address = localStorage.getItem("walletAddress");
-        if (address) {
-          // Set provider using local storage wallet address
-          setProvider(
-            new ethers.providers.JsonRpcProvider(chainConfig.rpcTarget)
-          );
-        } else if (window.ethereum) {
-          // Request account access and set provider using MetaMask
-          await window.ethereum.request({ method: "eth_requestAccounts" });
-          setProvider(new ethers.providers.Web3Provider(window.ethereum));
-        } else {
-          setError("No wallet provider found. Please connect a wallet.");
-        }
-      } catch (err) {
-        setError("Error connecting to wallet. Please try again.");
-        console.error("Provider setup error:", err);
-      }
-    };
+      const provider = await EthereumProvider.init({
+        projectId: "aecf1ee81036bd3fe28c914b0465a30f",
+        metadata: {
+          name: "AppKit",
+          description: "AppKit Example",
+          url: "https://example.com",
+          icons: ["https://avatars.githubusercontent.com/u/179229932"],
+        },
+        showQrModal: true,
+        optionalChains: [1, 137, 2020, 11155111],
 
+        rpcMap: {
+          11155111:
+            "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
+        },
+      });
+      setProvider(provider);
+    };
     setupProvider();
   }, []);
 

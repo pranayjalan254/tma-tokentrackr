@@ -4,6 +4,7 @@ import "./WatchList.css";
 import { MdRemoveCircle } from "react-icons/md";
 import { ERC20_ABI } from "../../../ERC20_ABI.js";
 import { popularTokens } from "../../PopularTokens.js";
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 const WatchList = () => {
   const [tokens, setTokens] = useState(() => {
@@ -18,28 +19,24 @@ const WatchList = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Function to set up the provider
     const setupProvider = async () => {
-      let address = localStorage.getItem("walletAddress");
-      if (address) {
-        const providerInstance = new ethers.providers.JsonRpcProvider(
-          chainConfig.rpcTarget
-        );
-        setProvider(providerInstance);
-      } else {
-        // Set up provider based on Web3Auth or MetaMask
-        try {
-          if (window.ethereum) {
-            await window.ethereum.request({ method: "eth_requestAccounts" });
-            setProvider(new ethers.providers.Web3Provider(window.ethereum));
-          } else {
-            setError("No wallet provider found. Please connect a wallet.");
-          }
-        } catch (err) {
-          setError("Error connecting to wallet. Please try again.");
-          console.error("Provider setup error:", err);
-        }
-      }
+      const provider = await EthereumProvider.init({
+        projectId: "aecf1ee81036bd3fe28c914b0465a30f",
+        metadata: {
+          name: "AppKit",
+          description: "AppKit Example",
+          url: "https://example.com",
+          icons: ["https://avatars.githubusercontent.com/u/179229932"],
+        },
+        showQrModal: true,
+        optionalChains: [1, 137, 2020, 11155111],
+
+        rpcMap: {
+          11155111:
+            "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
+        },
+      });
+      setProvider(provider);
     };
     setupProvider();
   }, []);

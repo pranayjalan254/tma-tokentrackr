@@ -59,7 +59,7 @@ const Dashboard = () => {
         optionalChains: [1, 137, 2020, 11155111],
 
         rpcMap: {
-          1155111:
+          11155111:
             "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
         },
       });

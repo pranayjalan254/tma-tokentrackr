@@ -5,54 +5,43 @@ import CheckAllowance from "./CheckAllowance";
 import ApproveTokens from "./ApproveTokens";
 import { ERC20_ABI } from "../../../ERC20_ABI.js";
 import { popularTokens } from "../../PopularTokens.js";
-
-const chainConfig = {
-  chainId: "0xaa36a7",
-  rpcTarget:
-    "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorer: "https://sepolia.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Sepolia Ether",
-};
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 const TokenAllowance = () => {
-  const [tokenAddress, setTokenAddress] = useState(""); // Address of the token to check/approve
-  const [contractAddress, setContractAddress] = useState(""); // Address of the contract to check/approve allowance
-  const [allowance, setAllowance] = useState(null); // Token allowance
-  const [approvalAmount, setApprovalAmount] = useState(""); // Amount of tokens to approve
-  const [error, setError] = useState(""); // Error message
-  const [success, setSuccess] = useState(""); // Success message
-  const [mode, setMode] = useState("check"); // Mode: "check" or "approve"
-  const [provider, setProvider] = useState(null); // Ethereum provider
-  const [isApproving, setIsApproving] = useState(false); // Approval state
-  const [selectedToken, setSelectedToken] = useState(""); // Currently selected token
+  const [tokenAddress, setTokenAddress] = useState("");
+  const [contractAddress, setContractAddress] = useState("");
+  allowance;
+  const [allowance, setAllowance] = useState(null);
+  const [approvalAmount, setApprovalAmount] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [mode, setMode] = useState("check");
+  const [provider, setProvider] = useState(null);
+  const [isApproving, setIsApproving] = useState(false);
+  const [selectedToken, setSelectedToken] = useState("");
 
-  // List of popular tokens including ETH
   const tokens = [{ symbol: "ETH", address: null }, ...popularTokens];
 
   // Initialize Ethereum provider
   useEffect(() => {
     const setupProvider = async () => {
-      let address = localStorage.getItem("walletAddress");
+      const provider = await EthereumProvider.init({
+        projectId: "aecf1ee81036bd3fe28c914b0465a30f",
+        metadata: {
+          name: "AppKit",
+          description: "AppKit Example",
+          url: "https://example.com",
+          icons: ["https://avatars.githubusercontent.com/u/179229932"],
+        },
+        showQrModal: true,
+        optionalChains: [1, 137, 2020, 11155111],
 
-      if (address) {
-        setProvider(
-          new ethers.providers.JsonRpcProvider(chainConfig.rpcTarget)
-        );
-      } else {
-        try {
-          if (window.ethereum) {
-            await window.ethereum.request({ method: "eth_requestAccounts" });
-            setProvider(new ethers.providers.Web3Provider(window.ethereum));
-          } else {
-            setError("No wallet provider found. Please connect a wallet.");
-          }
-        } catch (err) {
-          setError("Error connecting to wallet. Please try again.");
-          console.error("Provider setup error:", err);
-        }
-      }
+        rpcMap: {
+          11155111:
+            "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
+        },
+      });
+      setProvider(provider);
     };
     setupProvider();
   }, []);
