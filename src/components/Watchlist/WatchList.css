@@ -1,0 +1,133 @@
+.watchlist-container {
+  background: linear-gradient(to bottom, #043244 0%, #2b404a 100%);
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+}
+
+.add-token {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+
+.add-token input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.add-token button {
+  padding: 10px 20px;
+  background: #0f2027;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.add-token button:hover {
+  background: #203a43;
+  transform: translateY(-2px);
+}
+
+.token-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.token-list th,
+.token-list td {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+}
+
+.token-list th {
+  background: linear-gradient(to bottom, #043244 0%, #2b404a 100%);
+}
+
+.token-list tr:nth-child() {
+  background: linear-gradient(to bottom, #043244 0%, #2b404a 100%);
+}
+
+.token-list tr:hover {
+  background: linear-gradient(to bottom, #043244 0%, #2b404a 100%);
+}
+
+.popular-tokens {
+  margin-top: 20px;
+}
+
+.token-logos {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.token-logo {
+  width: 50px;
+  height: 50px;
+  margin: 50px 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.token-logo:hover {
+  transform: scale(1.1);
+}
+@media (max-width: 768px) {
+  .add-token {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .add-token input,
+  .add-token button {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .token-list th,
+  .token-list td {
+    font-size: 14px;
+  }
+
+  .token-logo {
+    width: 40px;
+    height: 40px;
+  }
+  .token-list th:nth-child(2),
+  .token-list td:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .watchlist-container {
+    padding: 10px;
+  }
+
+  .add-token input,
+  .add-token button {
+    width: 100%;
+  }
+
+  .token-list th,
+  .token-list td {
+    font-size: 12px;
+  }
+
+  .token-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .token-list th,
+  .token-list td {
+    padding: 6px;
+  }
+}
