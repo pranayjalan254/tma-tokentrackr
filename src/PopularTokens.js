@@ -1,27 +1,27 @@
 export const popularTokens = [
   {
     symbol: "USDC",
-    address: "0x8267cF9254734C6Eb452a7bb9AAF97B392258b21",
+    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     logo: "/usdc.png",
   },
   {
     symbol: "Wrapped Ether",
-    address: "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9",
+    address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     logo: "/wrapped-eth.png",
   },
   {
     symbol: "DAI",
-    address: "0x68194a729C2450ad26072b3D33ADaCbcef39D574",
+    address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     logo: "/dai.png",
   },
   {
     symbol: "Tether",
-    address: "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06",
+    address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     logo: "/tether.png",
   },
   {
     symbol: "ChainLink",
-    address: "0x779877A7B0D9E8603169DdbD7836e478b4624789",
+    address: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
     logo: "/chainlink.png",
   },
   {

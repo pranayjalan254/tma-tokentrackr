@@ -4,7 +4,9 @@ import "./WatchList.css";
 import { MdRemoveCircle } from "react-icons/md";
 import { ERC20_ABI } from "../../../ERC20_ABI.js";
 import { popularTokens } from "../../PopularTokens.js";
-import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import { useAccount, useBalance } from "wagmi";
+import { config } from "../../provider.tsx";
+import { getEthersProvider } from "../../provider.tsx";
 
 const WatchList = () => {
   const [tokens, setTokens] = useState(() => {
@@ -17,49 +19,27 @@ const WatchList = () => {
   const [provider, setProvider] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { address, isConnected } = useAccount();
 
   useEffect(() => {
     const setupProvider = async () => {
-      const provider = await EthereumProvider.init({
-        projectId: "aecf1ee81036bd3fe28c914b0465a30f",
-        metadata: {
-          name: "AppKit",
-          description: "AppKit Example",
-          url: "https://example.com",
-          icons: ["https://avatars.githubusercontent.com/u/179229932"],
-        },
-        showQrModal: true,
-        optionalChains: [1, 137, 2020, 11155111],
-
-        rpcMap: {
-          11155111:
-            "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
-          1: "https://eth-mainnet.g.alchemy.com/v2/fNr3TwzXGZWEmV13p3mCxDAhHYj1fgKP",
-        },
-      });
+      const provider = getEthersProvider(config);
       setProvider(provider);
     };
     setupProvider();
   }, []);
 
-  // Function to validate a token address
   const validateToken = async (token) => {
     try {
       if (!provider) {
         throw new Error("Provider not initialized");
       }
       const contract = new ethers.Contract(token, ERC20_ABI, provider);
+      console.log(contract);
       const name = await contract.name();
+      console.log(name);
       const decimals = await contract.decimals();
-      let address = localStorage.getItem("walletAddress");
-      let userAddress;
-      if (address) {
-        userAddress = address;
-      } else {
-        const signer = provider.getSigner();
-        userAddress = await signer.getAddress();
-      }
-      const balance = await contract.balanceOf(userAddress);
+      const balance = await contract.balanceOf(address);
       return { name, balance: ethers.utils.formatUnits(balance, decimals) };
     } catch (error) {
       console.error(`Error fetching data for ${token}:`, error);

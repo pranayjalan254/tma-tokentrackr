@@ -4,10 +4,10 @@ import Modal from "react-modal";
 import "./TokenTransfer.css";
 import { ERC20_ABI } from "../../../ERC20_ABI.js";
 import { popularTokens } from "../../PopularTokens.js";
-import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import { useAccount } from "wagmi";
+import { config, getEthersProvider } from "../../provider.tsx";
 
 const TokenTransfer = () => {
-  // State variables for managing form input, loading state, transaction details, etc.
   const [recipientAddress, setRecipientAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,6 +20,7 @@ const TokenTransfer = () => {
   const [customToken, setCustomToken] = useState("");
   const [tokenBalance, setTokenBalance] = useState(0);
   const [resetButtonVisible, setResetButtonVisible] = useState(false);
+  const { address, isConnected } = useAccount();
 
   // Array of supported tokens, including popular tokens
   const tokens = [
@@ -30,23 +31,7 @@ const TokenTransfer = () => {
   // Effect to set up the provider when the component mounts
   useEffect(() => {
     const setupProvider = async () => {
-      const provider = await EthereumProvider.init({
-        projectId: "aecf1ee81036bd3fe28c914b0465a30f",
-        metadata: {
-          name: "AppKit",
-          description: "AppKit Example",
-          url: "https://example.com",
-          icons: ["https://avatars.githubusercontent.com/u/179229932"],
-        },
-        showQrModal: true,
-        optionalChains: [1, 137, 2020, 11155111],
-
-        rpcMap: {
-          11155111:
-            "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
-          1: "https://eth-mainnet.g.alchemy.com/v2/fNr3TwzXGZWEmV13p3mCxDAhHYj1fgKP",
-        },
-      });
+      const provider = getEthersProvider(config);
       setProvider(provider);
     };
     setupProvider();
@@ -80,11 +65,6 @@ const TokenTransfer = () => {
     if (!provider) return;
 
     try {
-      let address = localStorage.getItem("walletAddress");
-      if (!address) {
-        const signer = provider.getSigner();
-        address = await signer.getAddress();
-      }
       if (token === "ETH") {
         // Fetch ETH balance
         const balance = await provider.getBalance(address);

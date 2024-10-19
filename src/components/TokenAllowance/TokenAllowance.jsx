@@ -5,12 +5,12 @@ import CheckAllowance from "./CheckAllowance";
 import ApproveTokens from "./ApproveTokens";
 import { ERC20_ABI } from "../../../ERC20_ABI.js";
 import { popularTokens } from "../../PopularTokens.js";
-import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import { config, getEthersProvider } from "../../provider.tsx";
+import { useAccount, useBalance } from "wagmi";
 
 const TokenAllowance = () => {
   const [tokenAddress, setTokenAddress] = useState("");
   const [contractAddress, setContractAddress] = useState("");
-  allowance;
   const [allowance, setAllowance] = useState(null);
   const [approvalAmount, setApprovalAmount] = useState("");
   const [error, setError] = useState("");
@@ -19,29 +19,14 @@ const TokenAllowance = () => {
   const [provider, setProvider] = useState(null);
   const [isApproving, setIsApproving] = useState(false);
   const [selectedToken, setSelectedToken] = useState("");
-
+  const { address, isConnected } = useAccount();
+  const { data: balanceData } = useBalance({ address });
   const tokens = [{ symbol: "ETH", address: null }, ...popularTokens];
 
   // Initialize Ethereum provider
   useEffect(() => {
     const setupProvider = async () => {
-      const provider = await EthereumProvider.init({
-        projectId: "aecf1ee81036bd3fe28c914b0465a30f",
-        metadata: {
-          name: "AppKit",
-          description: "AppKit Example",
-          url: "https://example.com",
-          icons: ["https://avatars.githubusercontent.com/u/179229932"],
-        },
-        showQrModal: true,
-        optionalChains: [1, 137, 2020, 11155111],
-
-        rpcMap: {
-          11155111:
-            "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
-          1: "https://eth-mainnet.g.alchemy.com/v2/fNr3TwzXGZWEmV13p3mCxDAhHYj1fgKP",
-        },
-      });
+      const provider = getEthersProvider(config);
       setProvider(provider);
     };
     setupProvider();
@@ -63,13 +48,6 @@ const TokenAllowance = () => {
 
     try {
       const contract = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
-      let address = localStorage.getItem("walletAddress");
-
-      if (!address) {
-        const signer = provider.getSigner();
-        address = await signer.getAddress();
-      }
-
       const allowanceAmount = await contract.allowance(
         address,
         contractAddress
@@ -96,8 +74,7 @@ const TokenAllowance = () => {
     try {
       const contract = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
       const signer = provider.getSigner();
-      const ownerAddress = await signer.getAddress();
-      const balance = await contract.balanceOf(ownerAddress);
+      const balance = await contract.balanceOf(address);
       const decimals = await contract.decimals();
       const formattedBalance = ethers.utils.formatUnits(balance, decimals);
 
