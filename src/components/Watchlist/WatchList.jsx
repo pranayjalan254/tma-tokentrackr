@@ -34,6 +34,7 @@ const WatchList = () => {
         rpcMap: {
           11155111:
             "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
+          1: "https://eth-mainnet.g.alchemy.com/v2/fNr3TwzXGZWEmV13p3mCxDAhHYj1fgKP",
         },
       });
       setProvider(provider);

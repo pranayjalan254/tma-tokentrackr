@@ -57,10 +57,10 @@ const Dashboard = () => {
         },
         showQrModal: true,
         optionalChains: [1, 137, 2020, 11155111],
-
         rpcMap: {
           11155111:
             "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
+          1: "https://eth-mainnet.g.alchemy.com/v2/fNr3TwzXGZWEmV13p3mCxDAhHYj1fgKP",
         },
       });
       const signer = provider.getSigner();
