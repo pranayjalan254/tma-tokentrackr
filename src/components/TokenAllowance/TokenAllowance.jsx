@@ -5,11 +5,11 @@ import CheckAllowance from "./CheckAllowance";
 import ApproveTokens from "./ApproveTokens";
 import { ERC20_ABI } from "../../../ERC20_ABI.js";
 import { popularTokens } from "../../PopularTokens.js";
+
 const chainConfig = {
   chainId: "0xaa36a7",
-  rpcTarget: `https://eth-sepolia.g.alchemy.com/v2/${
-    import.meta.env.VITE_API_KEY
-  }`,
+  rpcTarget:
+    "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
   displayName: "Ethereum Sepolia Testnet",
   blockExplorer: "https://sepolia.etherscan.io/",
   ticker: "ETH",

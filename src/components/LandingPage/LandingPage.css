@@ -1,24 +1,24 @@
+/* Base (mobile-first) styles */
 .landing-container {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-  position: relative;
-  padding: 0 20px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .content {
   text-align: center;
   color: white;
-  padding: 20px;
-  z-index: 1;
-  max-width: 600px;
+  padding: 10px;
   width: 100%;
 }
 
 .title {
-  font-size: 3.5rem;
+  font-size: 2rem;
   margin-bottom: 10px;
   font-weight: bold;
   font-family: "Poppins", sans-serif;
@@ -26,59 +26,38 @@
 }
 
 .subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 40px;
+  font-size: 1rem;
+  margin-bottom: 30px;
   color: #e5e5e5;
   font-family: "Roboto", sans-serif;
 }
 
-.get-started-btn {
-  padding: 14px 28px;
-  font-size: 1.1rem;
-  background: linear-gradient(to right, #8b999d, #182c32);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-.get-started-btn:hover {
-  background: linear-gradient(to right, #003040, #203a43);
-  transform: translateY(-2px);
-}
-
-/* For large screens */
-@media (min-width: 1200px) {
-  .title {
-    font-size: 4.5rem;
-  }
-  .subtitle {
-    font-size: 1.5rem;
-  }
-}
-
-/* For medium screens */
-@media (max-width: 768px) {
-  .title {
-    font-size: 3rem;
-  }
-  .subtitle {
-    font-size: 1.2rem;
-  }
-}
-
-/* For small screens */
-@media (max-width: 480px) {
+@media (min-width: 768px) {
   .title {
     font-size: 2.5rem;
   }
   .subtitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   .get-started-btn {
-    padding: 12px 20px;
-    font-size: 1rem;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+  }
+}
+
+/* For large screens (desktops) */
+@media (min-width: 1200px) {
+  .landing-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .content {
+    max-width: 600px;
+  }
+  .title {
+    font-size: 3.5rem;
+  }
+  .subtitle {
+    font-size: 1.5rem;
   }
 }

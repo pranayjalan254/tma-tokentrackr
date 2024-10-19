@@ -8,7 +8,7 @@ bot.start((ctx) => {
         [
           {
             text: "Open App",
-            web_app: { url: "https://token-trackr.vercel.app/" },
+            web_app: { url: "https://tma-tokentrackr.vercel.app/" },
           },
         ],
       ],

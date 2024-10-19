@@ -4,11 +4,11 @@ import { useAuth } from "../../../AuthContext";
 import { useState, useEffect } from "react";
 import { ethers } from "../../../ethers-5.6.esm.min.js";
 import "./Dashboard.css";
+
 const chainConfig = {
   chainId: "0xaa36a7",
-  rpcTarget: `https://eth-sepolia.g.alchemy.com/v2/${
-    import.meta.env.VITE_API_KEY
-  }`,
+  rpcTarget:
+    "https://eth-sepolia.g.alchemy.com/v2/Eni5THenJtUWs4oixXBwi2KRBDk8iMAH",
   displayName: "Ethereum Sepolia Testnet",
   blockExplorer: "https://sepolia.etherscan.io/",
   ticker: "ETH",
@@ -23,7 +23,6 @@ const Dashboard = () => {
   const [ethBalance, setEthBalance] = useState("0");
   const [network, setNetwork] = useState("");
   const [gasPrices, setGasPrices] = useState({ low: 0, medium: 0, high: 0 });
-  const [isWeb3Auth, setIsWeb3Auth] = useState(false);
 
   // Function to get network name based on chain ID
   const getNetworkName = (chainId) => {
@@ -88,11 +87,7 @@ const Dashboard = () => {
 
   // Handle logout process
   const handleLogout = async () => {
-    if (isWeb3Auth && web3auth.connected) {
-      await web3auth.logout();
-    }
-    localStorage.removeItem("walletAddress");
-    logout();
+    await logout();
   };
 
   return (
@@ -115,9 +110,6 @@ const Dashboard = () => {
           <ul>
             <li>
               <Link to="">Watch List</Link>
-            </li>
-            <li>
-              <Link to="historical-data">Historical Data</Link>
             </li>
             <li>
               <Link to="allowance">Allowance</Link>

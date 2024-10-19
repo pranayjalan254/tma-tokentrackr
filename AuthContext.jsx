@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Create the AuthContext to hold authentication state and methods
 const AuthContext = createContext();
@@ -6,6 +7,7 @@ const AuthContext = createContext();
 // AuthProvider component to wrap around your app and provide authentication context
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   // Check local storage on initial render to see if the user is authenticated
   useEffect(() => {
@@ -25,6 +27,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("isAuthenticated");
+    navigate("/");
   };
 
   return (
